@@ -8,4 +8,6 @@ A Unity-based project showcasing data persistence techniques between scenes and 
 
 This project was developed as part of Unity’s Junior Programmer pathway to demonstrate scene flow management, object-oriented principles, and data persistence implementation.
 
-Link: https://learn.unity.com/tutorial/submission-data-persistence-in-a-new-repo?missionId=5f751af7edbc2a0022cdbbb6&pathwayId=5f7e17e1edbc2a5ec21a20af#
+Project Details: https://learn.unity.com/tutorial/submission-data-persistence-in-a-new-repo?missionId=5f751af7edbc2a0022cdbbb6&pathwayId=5f7e17e1edbc2a5ec21a20af#
+
+Demo Video: https://youtu.be/QqWDBeBNQig
