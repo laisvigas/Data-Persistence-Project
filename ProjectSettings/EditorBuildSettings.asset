@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/menu.unity
     guid: 293111d1f7c7744718eab567e185d115
+  - enabled: 1
+    path: Assets/Scenes/BestPlayers.unity
+    guid: 1fbb33ad0dbc04d829734dbb04b6ec81
   m_configObjects: {}

@@ -14,11 +14,11 @@ public class MainManager : MonoBehaviour
     public Text PlayerNameText;
     public Text BestScoreText;
     public GameObject GameOverText;
+
     private bool m_Started = false;
     private int m_Points;
     private bool m_GameOver = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         const float step = 0.6f;
@@ -42,17 +42,21 @@ public class MainManager : MonoBehaviour
             PlayerNameText.text = $"Player: {GameData.PlayerName}";
         }
 
-        // Load and display the best score and player name
-        GameData.BestScore = PlayerPrefs.GetInt("BestScore", 0);
-        GameData.BestPlayer = PlayerPrefs.GetString("BestPlayer", "None");
+        // Load and display the best score
+        GameData.LoadScores();
 
-        if (BestScoreText != null)
+        if (GameData.TopScores.Count > 0)
         {
-            BestScoreText.text = $"Best Score: {GameData.BestPlayer} | {GameData.BestScore} points";
+            var bestScore = GameData.TopScores[0];
+            BestScoreText.text = $"Best Score: {bestScore.PlayerName} | {bestScore.Score} points";
+        }
+        else
+        {
+            BestScoreText.text = "Best Score: None | 0 points";
         }
     }
 
-    private void Update()
+    void Update()
     {
         if (!m_Started)
         {
@@ -87,29 +91,36 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         GameOverText.SetActive(true);
 
-        // Check if the current score is the best score
-        if (m_Points > GameData.BestScore)
+        // Add the current score to the list
+        GameData.TopScores.Add(new GameData.ScoreEntry(GameData.PlayerName, m_Points));
+
+        // Sort the scores in descending order
+        GameData.TopScores.Sort((a, b) => b.Score.CompareTo(a.Score));
+
+        // Keep only the top 5 scores
+        if (GameData.TopScores.Count > 5)
         {
-            GameData.BestScore = m_Points;
-            GameData.BestPlayer = GameData.PlayerName;
-
-            // Save the new best score and player name
-            PlayerPrefs.SetInt("BestScore", GameData.BestScore);
-            PlayerPrefs.SetString("BestPlayer", GameData.BestPlayer);
-            PlayerPrefs.Save();
-
-            Debug.Log($"New Best Score: {GameData.BestScore} by {GameData.BestPlayer}");
+            GameData.TopScores.RemoveRange(5, GameData.TopScores.Count - 5);
         }
 
-        // Update the BestScoreText with the new best score
-        if (BestScoreText != null)
+        // Save the updated scores
+        GameData.SaveScores();
+
+        // Update the BestScoreText
+        if (BestScoreText != null && GameData.TopScores.Count > 0)
         {
-            BestScoreText.text = $"Best Score: {GameData.BestPlayer} | {GameData.BestScore} points";
+            var bestScore = GameData.TopScores[0];
+            BestScoreText.text = $"Best Score: {bestScore.PlayerName} | {bestScore.Score} points";
         }
     }
 
     public void MainMenu()
     {
-        SceneManager.LoadScene("menu"); 
+        SceneManager.LoadScene("menu");
+    }
+
+    public void BestPlayers()
+    {
+        SceneManager.LoadScene("BestPlayers");
     }
 }
